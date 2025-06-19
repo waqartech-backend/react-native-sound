@@ -28,11 +28,7 @@
     "android",
     "ios",
     "windows",
-    "RNSound.podspec",
-    "RNSound.xcodeproj",
-    "RNSound",
-    "index.d.ts",
-    "sound.js"
+    "RNSound.podspec"
   ],
   "codegenConfig": {
     "name": "RNSoundSpec",
