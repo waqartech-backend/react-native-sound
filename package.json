@@ -32,7 +32,7 @@
     "RNSound.xcodeproj",
     "RNSound",
     "index.d.ts",
-    "sound.js",
+    "sound.js"
   ],
   "codegenConfig": {
     "name": "RNSoundSpec",
