@@ -6,7 +6,6 @@ var IsAndroid = RNSound.IsAndroid;
 var IsWindows = RNSound.IsWindows;
 var resolveAssetSource = require("react-native/Libraries/Image/resolveAssetSource");
 var eventEmitter = new ReactNative.NativeEventEmitter(RNSound);
-import { Image } from 'react-native';
 
 var nextKey = 0;
 
@@ -38,7 +37,7 @@ function setAndroidVolumes(sound) {
 }
 
 function Sound(filename, basePath, onError, options) {
-  var asset = Image.resolveAssetSource(filename);
+  var asset = resolveAssetSource(filename);
   if (asset) {
     this._filename = asset.uri;
     onError = basePath;

@@ -21,19 +21,19 @@
         [userInfo[@"AVAudioSessionInterruptionTypeKey"] longValue];
     AVAudioPlayer *player = [self playerForKey:self._key];
     if (audioSessionInterruptionType == AVAudioSessionInterruptionTypeEnded) {
-        if (player) {
+        if (player && player.isPlaying) {
             [player play];
             [self setOnPlay:YES forPlayerKey:self._key];
         }
     }
-    else if (audioSessionRouteChangeReason ==
+    if (audioSessionRouteChangeReason ==
         AVAudioSessionRouteChangeReasonOldDeviceUnavailable) {
         if (player) {
             [player pause];
             [self setOnPlay:NO forPlayerKey:self._key];
         }
     }
-    else if (audioSessionInterruptionType == AVAudioSessionInterruptionTypeBegan) {
+    if (audioSessionInterruptionType == AVAudioSessionInterruptionTypeBegan) {
         if (player) {
             [player pause];
             [self setOnPlay:NO forPlayerKey:self._key];
@@ -198,17 +198,18 @@ RCT_EXPORT_METHOD(prepare
     NSError *error;
     NSURL *fileNameUrl;
     AVAudioPlayer *player;
+    NSString* fileNameEscaped = [fileName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
-    if ([fileName hasPrefix:@"http"]) {
-        fileNameUrl = [NSURL URLWithString:fileName];
+    if ([fileNameEscaped hasPrefix:@"http"]) {
+        fileNameUrl = [NSURL URLWithString:fileNameEscaped];
         NSData *data = [NSData dataWithContentsOfURL:fileNameUrl];
         player = [[AVAudioPlayer alloc] initWithData:data error:&error];
-    } else if ([fileName hasPrefix:@"ipod-library://"]) {
-        fileNameUrl = [NSURL URLWithString:fileName];
+    } else if ([fileNameEscaped hasPrefix:@"ipod-library://"]) {
+        fileNameUrl = [NSURL URLWithString:fileNameEscaped];
         player = [[AVAudioPlayer alloc] initWithContentsOfURL:fileNameUrl
                                                         error:&error];
     } else {
-        fileNameUrl = [NSURL URLWithString:fileName];
+        fileNameUrl = [NSURL URLWithString:fileNameEscaped];
         player = [[AVAudioPlayer alloc] initWithContentsOfURL:fileNameUrl
                                                         error:&error];
     }
@@ -244,12 +245,7 @@ RCT_EXPORT_METHOD(play
         addObserver:self
            selector:@selector(audioSessionChangeObserver:)
                name:AVAudioSessionRouteChangeNotification
-             object:[AVAudioSession sharedInstance]];
-    [[NSNotificationCenter defaultCenter]
-        addObserver:self
-           selector:@selector(audioSessionChangeObserver:)
-               name:AVAudioSessionInterruptionNotification
-             object:[AVAudioSession sharedInstance]];
+             object:nil];
     self._key = key;
     AVAudioPlayer *player = [self playerForKey:key];
     if (player) {

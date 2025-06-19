@@ -41,7 +41,6 @@ Get system volume | ✓ | ✓ |
 Set system volume |   | ✓ |
 Get/set pan | ✓ |   |
 Get/set loops | ✓ | ✓ | ✓
-Get/set exact loop count | ✓ |   |
 Get/set current time | ✓ | ✓ | ✓
 Set speed | ✓ | ✓ |
 
@@ -52,9 +51,8 @@ First install the npm package from your app directory:
 ```javascript
 npm install react-native-sound --save
 ```
-Note: If your react-native version is >= 0.60 then linking is done automatically.
 
-If your react-native version is < 0.60 then link it using:
+Then link it automatically using:
 
 ```javascript
 react-native link react-native-sound
